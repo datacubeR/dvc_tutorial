@@ -55,12 +55,12 @@ stages:
         base:
           random_seed: 123
         train:
-          C: 1
+          C: 10
           max_iter: 10000
           model_name: model.joblib
     outs:
     - path: assets/models
-      md5: 1fab019e0b50c282bd9696193ff6e68b.dir
+      md5: 4f932dfee2706e831f36f1b9c7ad741e.dir
       size: 2694
       nfiles: 1
   evaluate:
@@ -71,7 +71,7 @@ stages:
       size: 77946
       nfiles: 4
     - path: assets/models
-      md5: 1fab019e0b50c282bd9696193ff6e68b.dir
+      md5: 4f932dfee2706e831f36f1b9c7ad741e.dir
       size: 2694
       nfiles: 1
     - path: src/04-evaluate_model.py
@@ -79,5 +79,5 @@ stages:
       size: 558
     outs:
     - path: assets/metrics.json
-      md5: cd1a36521b15f461cd4bbdb95ab44ff8
+      md5: 0cceff252046b7ee3431eeeb1e7cf7b3
       size: 72
