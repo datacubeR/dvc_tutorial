@@ -1,0 +1,9 @@
+
+.vscode
+*.zip
+*.ipynb
+__pycache__
+assets/data
+assets/features
+assets/models
+assets/original_data

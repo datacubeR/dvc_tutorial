@@ -1,0 +1,38 @@
+stages:
+  get_data:
+    cmd: python src/01-get_data.py
+    deps:
+    - src/01-get_data.py
+    params:
+    - base
+    - data
+    outs:
+    - assets/data
+  featurize:
+    cmd: python src/02-create_features.py
+    deps:
+    - assets/data
+    - src/02-create_features.py
+    params:
+    - features
+    outs:
+    - assets/features
+  train:
+    cmd: python src/03-train_model.py
+    deps:
+    - assets/features
+    - src/03-train_model.py
+    params:
+    - base
+    - train
+    outs:
+    - assets/models
+  evaluate:
+    cmd: python src/04-evaluate_model.py
+    deps:
+    - assets/features
+    - assets/models
+    - src/04-evaluate_model.py
+    metrics:
+    - assets/metrics.json:
+        cache: false

@@ -1,0 +1,13 @@
+base:
+  random_seed: 123
+
+data:
+  file_name: nba_stats.csv
+
+features:
+  remove: [Rk, Player, Tm, Pos]
+
+train:
+  C: 150
+  max_iter: 10000
+  model_name: model.joblib
