@@ -2,3 +2,4 @@ gdown
 pandas
 dvc
 scikit-learn
+matplotlib
