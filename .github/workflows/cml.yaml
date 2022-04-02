@@ -1,0 +1,25 @@
+name: experiments
+on: [push]
+jobs:
+  train-model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: iterative/setup-cml@v1
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Train model
+        env:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pip3 install -r requirements.txt
+          bash exp_file.sh
+
+          echo "## Resultados del Experimento" >> report.md
+          dvc exp show --only-changed --drop 'assets|src' --no-pager --md >> report.md
+          
+          echo "## Parallel Plot\n" >> report.md
+          dvc exp show --only-changed --drop 'assets|src' --pcp --sort_by test_recall >> report.md
+
+          cml send-comment report.md
