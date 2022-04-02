@@ -14,7 +14,9 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pip3 install -r requirements.txt
-          bash exp_file.sh
+          #bash exp_file.sh
+          dvc exp run --queue -S train.C=0.005
+          dvc exp run --run-all
 
           echo "## Resultados del Experimento" >> report.md
           dvc exp show --only-changed --drop 'assets|src' --no-pager --md >> report.md
