@@ -1,0 +1,57 @@
+# name: Entrenamiento
+# on: [push]
+# jobs:
+#   train-model:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#       - uses: iterative/setup-cml@v1
+#       - uses: actions/setup-python@v2
+#         with:
+#           python-version: '3.x'
+#       - name: Train model
+#         run: |
+#           pip3 install -r requirements.txt
+#           dvc repro
+
+#       - name: Create CML report
+#         env:
+#           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         run: |
+
+#           echo "## Resultados del Entrenamiento del Mejor Modelo" >> report.md
+#           dvc metrics show --show-md >> report.md
+
+#           echo "##  Matriz de Confusión Modelo Final" >> report.md
+#           cml publish conf_mat.png --md >> report.md
+          
+#           cml send-comment report.md
+
+name: experiments
+on: [push]
+jobs:
+  train-model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with: 
+          fetch-depth: 0
+      - uses: fregante/setup-git-user@v1
+      - uses: iterative/setup-cml@v1
+      - uses: iterative/setup-dvc@v1
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Experiment
+        env:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pip3 install -r requirements.txt
+          bash exp_file.sh
+          # dvc exp run -S train.C=0.005
+          # dvc exp run -S train.C=100
+
+          echo "## Resultados del Experimento" >> report.md
+          dvc exp show --only-changed --drop 'assets|src' --no-pager --md >> report.md
+
+          cml send-comment report.md
